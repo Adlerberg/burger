@@ -86,29 +86,38 @@ class BurgerBuilder extends Component {
 
     purchaseContinueHandler = () => {
         //alert('You continue!');
-        this.setState({loading: true});
-        const order = {
-            ingredients: this.state.ingredients,
-            price: this.state.totalPrice.toFixed(2),
-            customer: {
-                name: 'Alex Sorochan',
-                address: {
-                    street: 'BlahBlah 1',
-                    city: 'TestCity',
-                    zipCode: '654231',
-                    country: 'Ukraine'
-                },
-                email: 'test@test.com'
-            },
-            deliveryMethod: 'greatest'
+        // this.setState({loading: true});
+        // const order = {
+        //     ingredients: this.state.ingredients,
+        //     price: this.state.totalPrice.toFixed(2),
+        //     customer: {
+        //         name: 'Alex Sorochan',
+        //         address: {
+        //             street: 'BlahBlah 1',
+        //             city: 'TestCity',
+        //             zipCode: '654231',
+        //             country: 'Ukraine'
+        //         },
+        //         email: 'test@test.com'
+        //     },
+        //     deliveryMethod: 'greatest'
+        // }
+        // axios.post('/orders.json', order)
+        // .then(responce => {
+        //     this.setState({loading: false, purchasing: false});
+        // })
+        // .catch(error => {
+        //     this.setState({loading: false, purchasing: false});
+        // });
+        const queryParams = [];
+        for (let i in this.state.ingredients) {
+            queryParams.push(encodeURIComponent(i) + '=' + encodeURIComponent(this.state.ingredients[i]));
         }
-        axios.post('/orders.json', order)
-        .then(responce => {
-            this.setState({loading: false, purchasing: false});
+        const queryString = queryParams.join('&')
+        this.props.history.push({
+            pathname: '/checkout',
+            search: '?' + queryString
         })
-        .catch(error => {
-            this.setState({loading: false, purchasing: false});
-        });
     }
 
     render () {
